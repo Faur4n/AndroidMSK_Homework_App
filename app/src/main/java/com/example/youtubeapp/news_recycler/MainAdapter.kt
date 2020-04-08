@@ -1,4 +1,4 @@
-package com.example.youtubeapp
+package com.example.youtubeapp.news_recycler
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.youtubeapp.model.NewsItem
+import com.example.youtubeapp.R
 
 class MainAdapter(private val context: Context/*, newsFeed: NewsFeed*/) : RecyclerView.Adapter<MainViewHolder>() {
 
@@ -34,6 +36,10 @@ class MainAdapter(private val context: Context/*, newsFeed: NewsFeed*/) : Recycl
     fun getNewsUrl(position: Int): String {
         return this.newsList[position].url!!
     }
+
+    fun getNewsId(position: Int): String {
+        return this.newsList[position].uid!!
+    }
 }
 
 class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,7 +49,7 @@ class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val newsTextView = itemView.findViewById(R.id.news_text_view) as TextView
     private val titleTextView = itemView.findViewById(R.id.title_text_view) as TextView
 
-    fun setUi(results: NewsItem,context: Context) {
+    fun setUi(results: NewsItem, context: Context) {
         val imageUrl = results.imageUrl
         val newsTitle = results.title
         val newsCategory = results.category

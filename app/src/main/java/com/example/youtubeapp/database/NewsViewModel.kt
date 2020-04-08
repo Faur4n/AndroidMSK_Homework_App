@@ -4,11 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.youtubeapp.NewsItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import com.example.youtubeapp.model.NewsItem
+import kotlinx.coroutines.*
 
 class NewsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,9 +25,16 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         repository.replaceAll(newsEntity)
     }
 
-    fun getNewsById(){
+    suspend fun getById(id: String) : NewsItem {
+        return withContext(Dispatchers.IO){
+            val newsEntity = repository.getNewsById(id)
 
+            val newsItem = Converter().fromDatabaseSingle(newsEntity)
+
+            return@withContext newsItem
+        }
     }
+
 
 //    fun insert(news : NewsItem) = viewModelScope.launch(Dispatchers.IO){
 //        val converter : Converter = Converter()

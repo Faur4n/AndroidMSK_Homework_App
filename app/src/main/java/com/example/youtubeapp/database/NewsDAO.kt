@@ -9,7 +9,7 @@ interface NewsDAO {
     fun getAll() : LiveData<List<NewsEntity>>
 
     @Query("SELECT * from news_table WHERE uid = :id")
-    suspend fun getNewsByID(id: Int) : NewsEntity
+    suspend fun getNewsByID(id: String) : NewsEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(news : List<NewsEntity>)

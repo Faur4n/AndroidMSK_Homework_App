@@ -1,4 +1,4 @@
-package com.example.youtubeapp
+package com.example.youtubeapp.news_recycler
 
 import android.view.GestureDetector
 import android.view.MotionEvent

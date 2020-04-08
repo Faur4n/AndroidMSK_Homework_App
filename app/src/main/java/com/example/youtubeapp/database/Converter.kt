@@ -1,6 +1,6 @@
 package com.example.youtubeapp.database
 
-import com.example.youtubeapp.NewsItem
+import com.example.youtubeapp.model.NewsItem
 import java.util.*
 
 class Converter() {
@@ -18,15 +18,29 @@ class Converter() {
     }
 
     fun fromDatabase(newsEntity: List<NewsEntity>) : List<NewsItem> {
-        return newsEntity.map {NewsItem(
-            it.uid,
-            it.title,
-            it.imgUrl,
-            it.subsection,
-            it.published_date,
-            it.preview_text,
-            it.url
-            ) }
+        return newsEntity.map {
+            NewsItem(
+                it.uid,
+                it.title,
+                it.imgUrl,
+                it.subsection,
+                it.published_date,
+                it.preview_text,
+                it.url
+            )
+        }
+    }
+
+    fun fromDatabaseSingle(newsEntity: NewsEntity) : NewsItem {
+        return NewsItem(
+            newsEntity.uid,
+            newsEntity.title,
+            newsEntity.imgUrl,
+            newsEntity.subsection,
+            newsEntity.published_date,
+            newsEntity.preview_text,
+            newsEntity.url
+        )
     }
 
 }

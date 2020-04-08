@@ -1,5 +1,6 @@
 package com.example.youtubeapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -7,12 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubeapp.database.Converter
 import com.example.youtubeapp.database.NewsViewModel
+import com.example.youtubeapp.model.NewsItem
 import com.example.youtubeapp.network.NewsCategory
 import com.example.youtubeapp.network.RestAPI
+import com.example.youtubeapp.news_recycler.CategoriesSpinnerAdapter
+import com.example.youtubeapp.news_recycler.MainAdapter
+import com.example.youtubeapp.news_recycler.NewsItemDecoration
+import com.example.youtubeapp.news_recycler.RecyclerItemClickListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var spinnerCategories: Spinner
 
 
-    private  var categoriesAdapter:CategoriesSpinnerAdapter? = null
+    private  var categoriesAdapter: CategoriesSpinnerAdapter? = null
 
     private var newsAdapter: MainAdapter? = null
 
@@ -63,12 +69,23 @@ class MainActivity : AppCompatActivity() {
 
 
         /* Setup recycler view*/
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.default_margin).toInt()))
+        //recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(
+            NewsItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.spacing_micro)
+            )
+        )
 
         newsAdapter = MainAdapter(this)
 
         recyclerView.adapter = newsAdapter
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val columnsCount = 2
+            recyclerView.layoutManager = GridLayoutManager(this, columnsCount)
+        } else {
+            recyclerView.layoutManager = LinearLayoutManager(this)
+        }
 
         //////////////
         //SetViewModel
@@ -110,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                 object :
                     RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
-                        DetailsActivity.start(this@MainActivity, newsAdapter!!.getNewsUrl(position))
+                        DetailsActivity.start(this@MainActivity, newsAdapter!!.getNewsId(position))
                     }
                 })
         )

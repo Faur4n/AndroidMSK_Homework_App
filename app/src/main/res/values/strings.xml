@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YouTube App</string>
+    <string name="app_name">NY Times Clone</string>
     <string name="error_text">Ошибка загрузки.\nПовторите снова.</string>
 
 
@@ -29,4 +29,10 @@
     <string name="top_stories_category_automobiles">Automobiles</string>
     <string name="top_stories_category_obituaries">Obituaries</string>
     <string name="top_stories_category_insider">Insider</string>
+    <string name="open_full_article">Open full article</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_string">Welcome!</string>
+    <string name="enter">Продолжить</string>
 </resources>

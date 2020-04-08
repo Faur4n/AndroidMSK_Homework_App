@@ -3,12 +3,12 @@ package com.example.youtubeapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.youtubeapp.model.NewsItem;
 import com.example.youtubeapp.network.dto.MultimediaDTO;
 import com.example.youtubeapp.network.dto.NewsDTO;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public final class TopStoriesMapper {

@@ -1,4 +1,4 @@
-package com.example.youtubeapp
+package com.example.youtubeapp.news_recycler
 
 import android.graphics.Rect
 import android.view.View

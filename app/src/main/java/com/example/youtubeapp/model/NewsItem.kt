@@ -1,4 +1,4 @@
-package com.example.youtubeapp
+package com.example.youtubeapp.model
 
 import java.io.Serializable
 
@@ -22,7 +22,15 @@ data class NewsItem(
             preview: String,
             url: String
         ): NewsItem {
-            return NewsItem(uid,title, imageUrl, category, publishDate, preview, url)
+            return NewsItem(
+                uid,
+                title,
+                imageUrl,
+                category,
+                publishDate,
+                preview,
+                url
+            )
         }
     }
 }

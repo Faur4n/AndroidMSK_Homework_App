@@ -10,8 +10,11 @@ class NewsRoomRepository(private val newsDAO: NewsDAO){
         newsDAO.insertAll(news)
     }
 
-
     suspend fun insert(oneNews : NewsEntity){
         newsDAO.insert(oneNews)
+    }
+
+    suspend fun getNewsById(id: String) : NewsEntity{
+        return newsDAO.getNewsByID(id)
     }
 }
