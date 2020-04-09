@@ -1,11 +1,18 @@
 package com.example.youtubeapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -98,11 +105,25 @@ class MainActivity : AppCompatActivity() {
         })
 
         reloadButton.setOnClickListener {
-            loadItems(categoriesAdapter!!.selectedCategory.serverValue())
+            //loadItems(categoriesAdapter!!.selectedCategory.serverValue())
+            val serviceIntent = Intent(this,UpdateService::class.java)
+            serviceIntent.putExtra("category",categoriesAdapter!!.selectedCategory.serverValue())
+
+            startService(serviceIntent)
         }
 
         fab.setOnClickListener {
-            loadItems(categoriesAdapter!!.selectedCategory.serverValue())
+            //loadItems(categoriesAdapter!!.selectedCategory.serverValue())
+            //DownloadingNews(this).updateNews(categoriesAdapter!!.selectedCategory.serverValue())
+
+            val serviceIntent = Intent(this,UpdateService::class.java)
+            serviceIntent.putExtra("category",categoriesAdapter!!.selectedCategory.serverValue())
+
+            startService(serviceIntent)
+
+            //issueNotification()
+
+
         }
         //!!!!!!!!!!!!!!!!!!!! тут грузит еще раз при выборе категории
 
@@ -111,16 +132,23 @@ class MainActivity : AppCompatActivity() {
         categoriesAdapter?.setOnCategorySelectedListener({ category -> if(category.serverValue() == lastSelectedCategory){
             lastSelectedCategory = category.serverValue()
         }else{
-            loadItems(categoriesAdapter!!.selectedCategory.serverValue())
+            //loadItems(categoriesAdapter!!.selectedCategory.serverValue())
             lastSelectedCategory = category.serverValue()
+
+            val serviceIntent = Intent(this,UpdateService::class.java)
+            serviceIntent.putExtra("category",categoriesAdapter!!.selectedCategory.serverValue())
+
+            startService(serviceIntent)
         }
         },spinnerCategories)
 
 
         //////End setup
 
-        //fetchJson(this)
+        //Setup UpdateService
 
+
+        /////
         recyclerView.addOnItemTouchListener(
             RecyclerItemClickListener(
                 recyclerView,
@@ -132,6 +160,44 @@ class MainActivity : AppCompatActivity() {
                 })
         )
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    fun makeNotificationChannel(id : String,  name : String,  importance : Int)
+    {
+    val channel = NotificationChannel(id, name, importance);
+    channel.setShowBadge(true); // set false to disable badges, Oreo exclusive
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+    notificationManager.createNotificationChannel(channel);
+}
+
+    fun issueNotification()
+{
+
+    // make the channel. The method has been discussed before.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        makeNotificationChannel("CHANNEL_1", "Example channel", NotificationManager.IMPORTANCE_DEFAULT);
+    }
+    // the check ensures that the channel will only be made
+    // if the device is running Android 8+
+
+    val notification =
+                NotificationCompat.Builder(this, "CHANNEL_1");
+    // the second parameter is the channel id.
+    // it should be the same as passed to the makeNotificationChannel() method
+
+    notification.setSmallIcon(R.mipmap.ic_launcher) // can use any other icon
+        .setContentTitle("Notification!")
+        .setContentText("This is an Oreo notification!")
+        .setNumber(3).setAutoCancel(true)
+        // this shows a number in the notification dots
+
+    val  notificationManager =
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+    notificationManager.notify(1, notification.build());
+}
 
     private fun setupSpinner() {
         val categories: Array<NewsCategory> = NewsCategory.values()
